@@ -43,3 +43,42 @@ module.exports.logout = (req, res, next) => {
         res.redirect("/listings");
     });
 };
+
+module.exports.showProfile = async (req, res) => {
+    const user = await User.findById(req.user._id);
+    const listings = await Listing.find({ owner: req.user._id });
+    const bookings = await Booking.find({ user: req.user._id }).populate('listing');
+    
+    res.render("users/profile.ejs", { user, listings, bookings });
+};
+
+
+module.exports.addToWishlist = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(req.user._id);
+    
+    if (!user.wishlist.includes(id)) {
+        user.wishlist.push(id);
+        await user.save();
+        req.flash("success", "Added to wishlist!");
+    } else {
+        req.flash("error", "Already in wishlist!");
+    }
+    
+    res.redirect(`/listings/${id}`);
+};
+
+module.exports.removeFromWishlist = async (req, res) => {
+    const { id } = req.params;
+    await User.findByIdAndUpdate(req.user._id, {
+        $pull: { wishlist: id }
+    });
+    
+    req.flash("success", "Removed from wishlist!");
+    res.redirect("/wishlist");
+};
+
+module.exports.showWishlist = async (req, res) => {
+    const user = await User.findById(req.user._id).populate('wishlist');
+    res.render("users/wishlist.ejs", { listings: user.wishlist });
+};

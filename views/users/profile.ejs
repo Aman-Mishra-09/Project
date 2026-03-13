@@ -1,0 +1,64 @@
+/*
+<% layout("/layouts/boilerplate") %>
+
+    <div class="row mt-3">
+        <div class="col-10 offset-1">
+            <h2>My Profile</h2>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>
+                        <%= user.username %>
+                    </h4>
+                    <p class="text-muted">
+                        <%= user.email %>
+                    </p>
+                </div>
+            </div>
+
+            <h3>My Listings (<%= listings.length %>)</h3>
+            <div class="row">
+                <% listings.forEach(listing=> { %>
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="<%= listing.image.url %>" class="card-img-top"
+                                style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5>
+                                    <%= listing.title %>
+                                </h5>
+                                <p>₹<%= listing.price.toLocaleString("en-IN") %>/night</p>
+                                <a href="/listings/<%= listing._id %>" class="btn btn-sm btn-primary">View</a>
+                                <a href="/listings/<%= listing._id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+
+            <h3 class="mt-4">My Bookings (<%= bookings.length %>)</h3>
+            <div class="row">
+                <% bookings.forEach(booking=> { %>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>
+                                    <%= booking.listing.title %>
+                                </h5>
+                                <p>Check-in: <%= booking.checkIn.toDateString() %>
+                                </p>
+                                <p>Check-out: <%= booking.checkOut.toDateString() %>
+                                </p>
+                                <p>Total: ₹<%= booking.totalPrice.toLocaleString("en-IN") %>
+                                </p>
+                                <span class="badge bg-<%= booking.status === 'confirmed' ? 'success' : 'warning' %>">
+                                    <%= booking.status %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </div>
+    */

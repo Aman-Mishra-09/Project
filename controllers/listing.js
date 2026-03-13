@@ -51,6 +51,19 @@ module.exports.renderEditForm = async (req, res) => {
 
 };
 
+module.exports.filterByCategory = async (req, res) => {
+    const { category } = req.query;
+    
+    let allListings;
+    if (category && category !== 'All') {
+        allListings = await Listing.find({ category: category });
+    } else {
+        allListings = await Listing.find({});
+    }
+    
+    res.render("listings/index.ejs", { allListings, selectedCategory: category });
+};
+
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
